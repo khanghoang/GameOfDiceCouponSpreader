@@ -1,7 +1,7 @@
 {
-  "name": "express4-es6",
+  "name": "game-of-dice-coupon-spreader",
   "version": "1.0.0",
-  "description": "",
+  "description": "Game of Dice server that allow you enter coupon code once and spread the others player",
   "main": "server.js",
   "private": true,
   "scripts": {
@@ -35,6 +35,7 @@
     "gulp-concat": "^2.6.0",
     "gulp-nodemon": "^2.0.4",
     "gulp-sourcemaps": "^1.5.2",
+    "gulp-util": "^3.0.7",
     "jade": "^1.11.0",
     "lodash": "^3.10.1",
     "method-override": "^2.3.5",
@@ -51,6 +52,7 @@
     "passport-local": "^1.0.0",
     "pluralize": "^1.2.1",
     "pm2": "^0.15.10",
+    "request": "^2.65.0",
     "rewire": "^2.3.4",
     "shipit-deploy": "^2.0.0",
     "shipit-pm2": "0.0.4",
