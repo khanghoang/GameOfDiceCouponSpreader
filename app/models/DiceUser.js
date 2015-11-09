@@ -2,12 +2,12 @@ import CreateUpdateAt from 'mongoose-timestamp';
 
 const Schema = Mongoose.Schema;
 
-var DesignSchema = new Schema({
+var DiceUserSchema = new Schema({
   uid: String
 });
 
-DesignSchema.plugin(CreateUpdateAt);
+DiceUserSchema.plugin(CreateUpdateAt);
 
-let Design = Mongoose.model('DiceUser', DesignSchema);
+let DiceUser = Mongoose.model('DiceUser', DiceUserSchema);
 
 export default DiceUser;
