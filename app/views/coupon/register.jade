@@ -2,8 +2,8 @@ extends ../layouts/default
 
 block content
   .container
+    h2.form-signin-heading(style='text-align: center;') Enter your UID to register
     form(name="login", class='form-signin' action="/dicer/register", method="POST")
-      h2.form-signin-heading Enter your UID to register
       label.sr-only(for='') UID
       input#inputEmail.form-control(type='text', placeholder='uid', required='', autofocus='', name='uid')
       br

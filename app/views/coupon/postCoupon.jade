@@ -2,8 +2,8 @@ extends ../layouts/default
 
 block content
   .container
-    form(name="login", class='form-signin' action="/coupon/postCoupon", method="POST")
-      h2.form-signin-heading Enter Coupon code to spread the world
+    h2.form-signin-heading(style='text-align: center;') Enter Coupon code to spread the world
+    form(name="login", class='form-signin' action="/coupon/create", method="POST")
       label.sr-only(for='') Coupon code
       input#inputEmail.form-control(type='text', placeholder='Coupon Code', required='', autofocus='', name='coupon')
       br
