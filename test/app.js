@@ -194,6 +194,20 @@ describe('Design API', function() {
         Designs.remove({}, done);
       });
   });
+
+  it('get post coupon page', (done) => {
+    express
+      .get('/coupon/post')
+      .expect(200)
+      .end(() => done());
+  });
+
+  it('get register dice user page', (done) => {
+    express
+      .get('/dicer/create')
+      .expect(200)
+      .end(() => done());
+  });
 });
 
 after(() => {
