@@ -16,63 +16,135 @@ const Status  = constantMirror(
 
 class CouponController {
 
-  static submit = (uid, coupon) => {
-    request("/event/god/coupon",
-            {
-              formData: {
-                couponNumber : coupon,
-                uid : uid,
-                language : 'en'
-              }
-            }, function(error, res, body) {
-              if (error) {
-                alert('Failed to verify a coupon.');
-                return;
-              }
+  static postToCreateDiceUser = async (req, res, next) => {
+    if (!req.body.uid) {
+      next(new Error('invalid uid'));
+    }
 
-              var data = body;
+    let result = yield CouponController.createDiceUser(req.body);
+    let message = '';
 
-              if(data.resultSetExt.result == 'true') {
-                var usrMsg = data.resultSetExt.message;
-                usrMsg = "";
-                if(usrMsg == null || usrMsg == "null" || usrMsg == ""){
-                  usrMsg = Status.SUCCESS;
+    if (result instanceof DiceUsers) {
+      message = 'Okie, we got you';
+    } else {
+      // error
+      message = result.toString();
+    }
+
+    res.render('coupon/register', {
+      message: message
+    });
+  }
+
+  static getRegisterDiceUserPage = (req, res, next) => {
+    res.render('coupon/register', {
+    });
+  }
+
+  static postCoupon = (req, res, next) => {
+    if (!req.body.coupon) {
+      next(new Error('invalid coupon'));
+    }
+
+    let coupon = req.body.coupon;
+    CouponController.submitAsList(coupon);
+    res.render('coupon/postCoupon', {
+      message: "Ok, coupon is sent"
+    });
+  }
+
+  static getPostCouponPage = (req, res, next) => {
+    res.render('coupon/postCoupon', {
+    });
+  }
+
+  static createDiceUser = async (uid) => {
+    let user = new DiceUsers({uid: uid});
+    try {
+      await user.save();
+    } catch (e) {
+      return e;
+    }
+
+    return user;
+  }
+
+  static submitAsList = async (coupon) => {
+    let users = await DiceUsers.find({});
+    // I know what I'm doing
+    Promise.all(users.map(u => CouponController.getPromiseFromSubmit(u.uid, coupon)));
+  }
+
+  static submitForAnUser = async (uid, coupon) => {
+    let data;
+    try {
+      data = await CouponController.getPromiseFromSubmit(uid, coupon);
+    } catch (e) {
+      return "Wrong coupon code.";
+    }
+    if(data.resultSetExt.result == 'true') {
+      var usrMsg = data.resultSetExt.message;
+      usrMsg = "";
+      if(usrMsg == null || usrMsg == "null" || usrMsg == ""){
+        usrMsg = Status.SUCCESS;
+      }
+      return usrMsg;
+    } else {
+      switch(data.resultSetExt.message) {
+        case Status.UNKNOWN_COUPON:
+          return "Wrong coupon code.";
+        break;
+        case Status.DECRYPTION_FAILED:
+          return "Invalid Joycity membership number.";
+        break;
+        case Status.INVALID_COUNTRY_CODE:
+          return "Entered code cannot be used in current country.\nPlease check the list of countries available for use of coupon and try again.";
+        break;
+        case Status.PROMOTION_REWARD_FAILED:
+          return "Failed to send rewards.\nPlease contact customer support.";
+        break;
+        case Status.ALREADY_USED_COUPON:
+          alert("This coupon code has already been used.");
+        break;
+        case Status.OVER_TOTAL_LIMIT_COUPON:
+          return "Coupon registration has been finished on a first-come first-served basis.";
+        break;
+        case Status.DUPLICATE_PARTICIPATION_COUPON:
+          return "Coupon registration has been finished on a first-come first-served basis.";
+        break;
+        case Status.DUPLICATE_PARTICIPATION_COUPON:
+          return "You have already been participated in coupon event.";
+        break;
+        return "You have already been participated in coupon event.";
+        break;
+        default :
+          return 'Failed to verify a coupon.';
+        break;
+      }
+    }
+  }
+
+  static getPromiseFromSubmit = (uid, coupon) => {
+    return new Promise(function(resolve, reject) {
+      request("/event/god/coupon",
+              {
+                formData: {
+                  couponNumber : coupon,
+                  uid : uid,
+                  language : 'en'
                 }
-                return usrMsg;
-              } else {
-                switch(data.resultSetExt.message) {
-                  case Status.UNKNOWN_COUPON:
-                    return "Wrong coupon code.";
-                  break;
-                  case Status.DECRYPTION_FAILED:
-                    return "Invalid Joycity membership number.";
-                  break;
-                  case Status.INVALID_COUNTRY_CODE:
-                    return "Entered code cannot be used in current country.\nPlease check the list of countries available for use of coupon and try again.";
-                  break;
-                  case Status.PROMOTION_REWARD_FAILED:
-                    return "Failed to send rewards.\nPlease contact customer support.";
-                  break;
-                  case Status.ALREADY_USED_COUPON:
-                    alert("This coupon code has already been used.");
-                  break;
-                  case Status.OVER_TOTAL_LIMIT_COUPON:
-                    return "Coupon registration has been finished on a first-come first-served basis.";
-                  break;
-                  case Status.DUPLICATE_PARTICIPATION_COUPON:
-                    return "Coupon registration has been finished on a first-come first-served basis.";
-                  break;
-                  case Status.DUPLICATE_PARTICIPATION_COUPON:
-                    return "You have already been participated in coupon event.";
-                  break;
-                    return "You have already been participated in coupon event.";
-                  break;
-                  default :
-                    return 'Failed to verify a coupon.';
-                  break;
+              }, function(error, res, body) {
+                if (error) {
+                  reject(new Error('Failed to verify a coupon.'));
+                  return;
                 }
-              }
-            })
+
+                var data = body;
+
+                resolve(data);
+
+              })
+    })
   }
 }
 

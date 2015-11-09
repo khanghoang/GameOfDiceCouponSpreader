@@ -26,6 +26,8 @@ before(function* () {
 
   GLOBAL.DesignController =
     require('../../app/controllers/api/v1/DesignController');
+  GLOBAL.CouponController =
+    require('../../app/controllers/CouponController');
   GLOBAL.DesignManager =
     require('../../app/managers/DesignManager');
 });
