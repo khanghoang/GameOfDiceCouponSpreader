@@ -320,7 +320,7 @@ class App {
     let app = this.express;
 
     app.get('/', (req, res) => {
-      res.redirect('/admin/');
+      res.redirect('/coupon/create');
     });
 
     let userController = new UserController(Users);
