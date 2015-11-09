@@ -43,13 +43,13 @@ class CouponController {
     });
   }
 
-  static postCoupon = (req, res, next) => {
+  static postCoupon = async (req, res, next) => {
     if (!req.body.coupon) {
       next(new Error('invalid coupon'));
     }
 
     let coupon = req.body.coupon;
-    CouponController.submitAsList(coupon);
+    await CouponController.submitAsList(coupon);
     res.render('coupon/postCoupon', {
       flash: {
         info: "Ok, coupon is sent"
@@ -76,7 +76,7 @@ class CouponController {
   static submitAsList = async (coupon) => {
     let users = await DiceUsers.find({});
     // I know what I'm doing
-    Promise.all(users.map(u => CouponController.getPromiseFromSubmit(u.uid, coupon)));
+    users.map(u => CouponController.getPromiseFromSubmit(u.uid, coupon))
   }
 
   static submitForAnUser = async (uid, coupon) => {
@@ -99,6 +99,7 @@ class CouponController {
           return "Wrong coupon code.";
         break;
         case Status.DECRYPTION_FAILED:
+        case Status.UNKNOWN_COUPON:
           return "Invalid Joycity membership number.";
         break;
         case Status.INVALID_COUNTRY_CODE:
@@ -130,14 +131,15 @@ class CouponController {
 
   static getPromiseFromSubmit = (uid, coupon) => {
     return new Promise(function(resolve, reject) {
-      request("/event/god/coupon",
+      request.post("http://promotion.joycity.com/event/god/coupon",
               {
-                formData: {
+                form: {
                   couponNumber : coupon,
                   uid : uid,
                   language : 'en'
                 }
               }, function(error, res, body) {
+                console.log(error, res.statusCode, body);
                 if (error) {
                   reject(new Error('Failed to verify a coupon.'));
                   return;
