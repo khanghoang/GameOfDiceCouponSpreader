@@ -1,11 +1,9 @@
 {
-  "name": "express4-es6",
+  "name": "game-of-dice-coupon-spreader",
   "version": "1.0.0",
-  "description": "",
+  "description": "Game of Dice server that allow you enter coupon code once and spread the others player",
   "main": "server.js",
-  "bin": {
-    "gulp": "./node_modules/gulp-cli/bin/gulp.js"
-  },
+  "private": true,
   "scripts": {
     "start": "gulp babel && node dist/server.js",
     "pretest": "gulp babel",
@@ -25,6 +23,7 @@
     "body-parser": "^1.14.1",
     "connect-mongo": "^0.8.2",
     "connect-roles": "^3.1.1",
+    "constant-mirror": "^1.0.5",
     "cookie-parser": "^1.4.0",
     "crypto": "0.0.3",
     "errorhandler": "^1.4.2",
@@ -33,7 +32,7 @@
     "express-session": "^1.11.3",
     "gulp": "https://registry.npmjs.org/gulp/-/gulp-3.9.0.tgz",
     "gulp-babel": "^5.2.1",
-    "gulp-cli": "^0.3.0",
+    "gulp-cli": "https://registry.npmjs.org/gulp-cli/-/gulp-cli-0.3.0.tgz",
     "gulp-concat": "^2.6.0",
     "gulp-nodemon": "^2.0.4",
     "gulp-sourcemaps": "^1.5.2",
@@ -52,6 +51,7 @@
     "passport": "^0.3.0",
     "passport-local": "^1.0.0",
     "pluralize": "^1.2.1",
+    "request": "^2.65.0",
     "rewire": "^2.3.4",
     "sinon": "^1.17.1",
     "supertest": "^1.1.0",

@@ -1,0 +1,11 @@
+extends ../layouts/default
+
+block content
+  .container
+    h2.form-signin-heading(style='text-align: center;') Enter your UID to register
+    form(name="login", class='form-signin' action="/dicer/register", method="POST")
+      label.sr-only(for='') UID
+      input#inputEmail.form-control(type='text', placeholder='uid', required='', autofocus='', name='uid')
+      br
+      button.btn.btn-lg.btn-primary.btn-block(type='submit') Register
+      p if you already registered before, a(href='/coupon/create') go to enter coupon code.
