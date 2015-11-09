@@ -3,7 +3,10 @@ import CreateUpdateAt from 'mongoose-timestamp';
 const Schema = Mongoose.Schema;
 
 var DiceUserSchema = new Schema({
-  uid: String
+  uid: {
+    type: String,
+    unique: true
+  }
 });
 
 DiceUserSchema.plugin(CreateUpdateAt);
