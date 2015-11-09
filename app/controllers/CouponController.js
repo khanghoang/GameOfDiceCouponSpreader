@@ -21,7 +21,7 @@ class CouponController {
       next(new Error('invalid uid'));
     }
 
-    let result = yield CouponController.createDiceUser(req.body);
+    let result = await CouponController.createDiceUser(req.body);
     let message = '';
 
     if (result instanceof DiceUsers) {
