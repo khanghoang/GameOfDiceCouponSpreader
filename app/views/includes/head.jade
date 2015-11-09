@@ -6,24 +6,12 @@ nav.navbar.navbar-inverse
         span.icon-bar
         span.icon-bar
         span.icon-bar
-      a.navbar-brand(href='#') Petronas Contest
+          a.navbar-brand(href='#') Game of Dice Spread Coupon code
     .navbar-collapse.collapse
       ul.nav.navbar-nav.pull-right
-        if (user)
-          li
-            a(href='/admin/designs') All Designs
-          li
-            a(href='/admin/designs/pendingList') Pending Designs
-          li
-            a(href='/admin/designs/approvedList') Approved Designs
-          li
-            a(href='/admin/designs/rejectedList') Rejected Designs
-          li
-            a(href='/admin/designs/pinnedList') Pinned Designs
-          li
-            a(href='/logout') Logout
-        else
-          li
-            a(href='/login') Login
+        li
+          a(href='/dicer/register') Register
+        li
+          a(href='/coupon/create') Spread coupon code
     // /.nav-collapse
 
