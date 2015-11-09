@@ -21,7 +21,7 @@ class CouponController {
       next(new Error('invalid uid'));
     }
 
-    let result = await CouponController.createDiceUser(req.body);
+    let result = await CouponController.createDiceUser(req.body.uid);
     let message = '';
 
     if (result instanceof DiceUsers) {
@@ -32,7 +32,9 @@ class CouponController {
     }
 
     res.render('coupon/register', {
-      message: message
+      flash: {
+        info: message
+      }
     });
   }
 
@@ -49,7 +51,9 @@ class CouponController {
     let coupon = req.body.coupon;
     CouponController.submitAsList(coupon);
     res.render('coupon/postCoupon', {
-      message: "Ok, coupon is sent"
+      flash: {
+        info: "Ok, coupon is sent"
+      }
     });
   }
 
