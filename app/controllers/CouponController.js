@@ -1,5 +1,6 @@
 import request from 'request';
 import constantMirror from 'constant-mirror';
+import check from 'validate.js';
 
 const Status  = constantMirror(
   'SUCCESS',
@@ -21,8 +22,8 @@ class CouponController {
       next(new Error('invalid uid'));
     }
 
-    let result = await CouponController.createDiceUser(req.body.uid);
     let message = '';
+    let result = await CouponController.createDiceUser(req.body.uid);
 
     if (result instanceof DiceUsers) {
       message = 'Okie, we got you';
@@ -63,6 +64,10 @@ class CouponController {
   }
 
   static createDiceUser = async (uid) => {
+    if (!check.isNumber(+uid) || uid === '') {
+      return new Error('Err, I don\'t think that is your UID, it need to be all numbers');
+    }
+
     let user = new DiceUsers({uid: uid});
     try {
       await user.save();

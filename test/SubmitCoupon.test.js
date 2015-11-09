@@ -54,6 +54,12 @@ describe('Submit coupon', function() {
     expect(user instanceof DiceUsers).to.be.true;
   })
 
+  it('return error if uid is not numbers', function *() {
+    var uid = '123456-abc';
+    var user = yield CouponController.createDiceUser(uid);
+    expect(user instanceof Error).to.be.true;
+  })
+
   it('return error when duplicate users', function *() {
     var uid = '123456';
     var user = yield CouponController.createDiceUser('123456');
