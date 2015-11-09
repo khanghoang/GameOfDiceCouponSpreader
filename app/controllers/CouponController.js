@@ -2,6 +2,7 @@ import request from 'request';
 import constantMirror from 'constant-mirror';
 
 const Status  = constantMirror(
+  'SUCCESS',
   'UNKNOWN_COUPON',
   'DECRYPTION_FAILED',
   'UNKNOWN_USERKEY',
@@ -15,7 +16,7 @@ const Status  = constantMirror(
 
 class CouponController {
 
-  static submit: (uid, coupon) -> {
+  static submit = (uid, coupon) -> {
     request("/event/god/coupon",
             {
               formData: {
@@ -35,7 +36,7 @@ class CouponController {
                 var usrMsg = data.resultSetExt.message;
                 usrMsg = "";
                 if(usrMsg == null || usrMsg == "null" || usrMsg == ""){
-                  usrMsg = "Coupon registration complete.";
+                  usrMsg = Status.SUCCESS;
                 }
                 return usrMsg;
               } else {
