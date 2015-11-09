@@ -16,7 +16,7 @@ const Status  = constantMirror(
 
 class CouponController {
 
-  static submit = (uid, coupon) -> {
+  static submit = (uid, coupon) => {
     request("/event/god/coupon",
             {
               formData: {
@@ -76,4 +76,4 @@ class CouponController {
   }
 }
 
-exports default CouponController;
+export default CouponController;
